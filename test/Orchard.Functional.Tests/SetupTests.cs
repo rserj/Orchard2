@@ -56,9 +56,8 @@ namespace Orchard.Functional.Tests
 
         public void CreatePage(BrowserSession browser)
         {
-            var field = browser.FindField("New");
-            field.Click();
-            field.FindField("Page").Click();
+            browser.FindId("new").Click();
+            browser.ClickLink("Page");
 
             browser.FillIn("Title").With("New Test Page");
             // TODO: Test for auto generate link
