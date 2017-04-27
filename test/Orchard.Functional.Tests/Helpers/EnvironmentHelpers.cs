@@ -22,7 +22,7 @@ namespace Orchard.Functional.Tests
                 throw new InvalidOperationException("Could not find the solution directory");
             }
 
-            return Path.GetFullPath(Path.Combine(current.FullName, "src", "Orchard.Mvc.Web"));
+            return Path.GetFullPath(Path.Combine(current.FullName, "src", "Orchard.Cms.Web"));
         }
 
         public static string GetCurrentBuildConfiguration()
