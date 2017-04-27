@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Server.IntegrationTesting;
 using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace Orchard.Functional.Tests
 {
@@ -21,7 +22,7 @@ namespace Orchard.Functional.Tests
                 ApplicationType = ApplicationType.Portable,
                 AdditionalPublishParameters = " -r " + RuntimeEnvironment.GetRuntimeIdentifier(),
                 UserAdditionalCleanup = parameters => {
-
+                    File.Delete(Path.Combine(EnvironmentHelpers.GetApplicationPath(), "App_Data"));
                 }
             };
             

@@ -23,13 +23,15 @@ namespace Orchard.Functional.Tests
                 {
                     SetupWithSqlCe(browser);
 
+                    LoginWithAdmin(browser);
 
-
+                    CreatePage(browser);
                 }
             }
         }
 
-        public void SetupWithSqlCe(BrowserSession browser) {
+        public void SetupWithSqlCe(BrowserSession browser)
+        {
             browser.Visit("/");
 
             browser.FillIn("What is the name of your site?").With("Orchard Smoke Tests");
@@ -41,7 +43,29 @@ namespace Orchard.Functional.Tests
             browser.FillIn("Password").With("Password123_");
             browser.FillIn("Password Confirmation").With("Password123_");
             browser.ClickButton("Finish Setup");
+        }
 
+        public void LoginWithAdmin(BrowserSession browser)
+        {
+            browser.Visit("/Login");
+            browser.FillIn("Username").With("stAdmin");
+            browser.FillIn("Password").With("Password123_");
+            browser.ClickButton("Log in");
+            browser.Visit("/Admin");
+        }
+
+        public void CreatePage(BrowserSession browser)
+        {
+            var field = browser.FindField("New");
+            field.Click();
+            field.FindField("Page").Click();
+
+            browser.FillIn("Title").With("New Test Page");
+            // TODO: Test for auto generate link
+            browser.FillIn("Body").With("Some test content");
+            browser.ClickButton("Publish");
+            browser.Visit("/new-test-page");
+            Assert.True(browser.HasContent("New Test Page"));
         }
     }
 }
