@@ -61,7 +61,7 @@ namespace Orchard.Functional.Tests
 
             browser.FillIn("Title").With("New Test Page");
             // TODO: Test for auto generate link
-            browser.FillIn("Body").With("Some test content");
+            browser.FindCss(".trumbowyg-editor").SendKeys("Some test content");
             browser.ClickButton("Publish");
             browser.Visit("/new-test-page");
             Assert.True(browser.HasContent("New Test Page"));

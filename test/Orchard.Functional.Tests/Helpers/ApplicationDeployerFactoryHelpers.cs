@@ -22,7 +22,7 @@ namespace Orchard.Functional.Tests
                 ApplicationType = ApplicationType.Portable,
                 AdditionalPublishParameters = " -r " + RuntimeEnvironment.GetRuntimeIdentifier(),
                 UserAdditionalCleanup = parameters => {
-                    File.Delete(Path.Combine(EnvironmentHelpers.GetApplicationPath(), "App_Data"));
+                    Directory.Delete(Path.Combine(EnvironmentHelpers.GetApplicationPath(), "App_Data"), true);
                 }
             };
             
