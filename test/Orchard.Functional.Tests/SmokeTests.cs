@@ -11,7 +11,7 @@ namespace Orchard.Functional.Tests
     public class SmokeTests
     {
         // TODO: temporarily disabling these tests as dotnet xunit runner does not support 32-bit yet.
-        public class SmokeTests_X86
+        internal class SmokeTests_X86
         {
             [ConditionalTheory, Trait("E2Etests", "Smoke")]
             [OSSkipCondition(OperatingSystems.Linux)]
@@ -135,14 +135,8 @@ namespace Orchard.Functional.Tests
 
                 LoginWithAdmin(browser);
 
-                var urlOne = CreatePage(browser, "New Test Page");
-                var urlTwo = CreatePage(browser, "New Test Page 2");
-
-                browser.Visit(urlOne);
-                Assert.True(browser.HasContent("New Test Page"));
-
-                browser.Visit(urlTwo);
-                Assert.True(browser.HasContent("New Test Page 2"));
+                CreatePage(browser, "New Test Page");
+                CreatePage(browser, "New Test Page 2");
             }
         }
 
@@ -167,11 +161,11 @@ namespace Orchard.Functional.Tests
             browser.FillIn("Username").With("stAdmin");
             browser.FillIn("Password").With("Password123_");
             browser.ClickButton("Log in");
-            browser.Visit("/Admin");
         }
 
-        public string CreatePage(BrowserSession browser, string name)
+        public void CreatePage(BrowserSession browser, string name)
         {
+            browser.Visit("/Admin");
             browser.FindId("new").Click();
             browser.ClickLink("Page");
 
@@ -180,7 +174,10 @@ namespace Orchard.Functional.Tests
             browser.FindCss(".trumbowyg-editor").SendKeys("Some test content");
             browser.ClickButton("Publish");
 
-            return "/" + name.ToLowerInvariant().Replace(" ", "-");
+            var url = "/" + name.ToLowerInvariant().Replace(" ", "-");
+
+            browser.Visit(url);
+            Assert.True(browser.HasContent("New Test Page"));
         }
     }
 }
