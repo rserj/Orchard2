@@ -12,9 +12,9 @@ namespace Orchard.Data.Migration
     /// </summary>
     public class AutomaticDataMigrations : IModularTenantEvents
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly ShellSettings _shellSettings;
         private readonly ILogger _logger;
-        private readonly IServiceProvider _serviceProvider;
 
         public AutomaticDataMigrations(
             IServiceProvider serviceProvider,

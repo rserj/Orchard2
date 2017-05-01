@@ -37,7 +37,6 @@ namespace Microsoft.AspNetCore.Modules
                 _logger.LogInformation("Begin Routing Request");
             }
 
-
             var shellSettings = httpContext.Features.Get<ShellSettings>();
 
             // Define a PathBase for the current request that is the RequestUrlPrefix.

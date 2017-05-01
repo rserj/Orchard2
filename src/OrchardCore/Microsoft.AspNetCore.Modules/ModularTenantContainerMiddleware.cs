@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -28,52 +29,53 @@ namespace Microsoft.AspNetCore.Modules
             _logger = logger;
         }
 
-        public async Task Invoke(HttpContext httpContext)
+        public Task Invoke(HttpContext httpContext)
         {
             // Ensure all ShellContext are loaded and available.
             _orchardHost.Initialize();
 
             var shellSetting = _runningShellTable.Match(httpContext);
 
+            // We only serve the next request if the tenant has been resolved.
+            if (shellSetting == null)
+            {
+                return Task.CompletedTask;
+            }
+
             // Register the shell settings as a custom feature.
             httpContext.Features.Set(shellSetting);
 
-            // We only serve the next request if the tenant has been resolved.
-            if (shellSetting != null)
+            var shellContext = _orchardHost.GetOrCreateShellContext(shellSetting);
+
+            using (var scope = shellContext.CreateServiceScope())
             {
-                var shellContext = _orchardHost.GetOrCreateShellContext(shellSetting);
+                httpContext.RequestServices = scope.ServiceProvider;
 
-                using (var scope = shellContext.CreateServiceScope())
+                if (shellContext.IsActivated)
                 {
-                    httpContext.RequestServices = scope.ServiceProvider;
+                    return _next.Invoke(httpContext);
+                }
 
+                lock (shellContext)
+                {
+                    // The tenant gets activated here
                     if (!shellContext.IsActivated)
                     {
-                        lock (shellContext)
-                        {
-                            // The tenant gets activated here
-                            if (!shellContext.IsActivated)
-                            {
-                                var tenantEvents = scope.ServiceProvider
-                                    .GetServices<IModularTenantEvents>();
+                        var tenantEvents = httpContext.RequestServices
+                            .GetServices<IModularTenantEvents>();
 
-                                foreach (var tenantEvent in tenantEvents)
-                                {
-                                    tenantEvent.ActivatingAsync().Wait();
-                                }
+                        Task.WaitAll(
+                            tenantEvents.Select(te => te.ActivatingAsync()).ToArray());
 
-                                httpContext.Items["BuildPipeline"] = true;
-                                shellContext.IsActivated = true;
-
-                                foreach (var tenantEvent in tenantEvents)
-                                {
-                                    tenantEvent.ActivatedAsync().Wait();
-                                }
-                            }
-                        }
+                        httpContext.Items["BuildPipeline"] = true;
+                        shellContext.IsActivated = true;
+                                
+                        Task.WaitAll(
+                            tenantEvents.Select(te => te.ActivatedAsync()).ToArray());
                     }
-                    await _next.Invoke(httpContext);
                 }
+                    
+                return _next.Invoke(httpContext);
             }
         }
     }
