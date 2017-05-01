@@ -10,6 +10,45 @@ namespace Orchard.Functional.Tests
 {
     public class SmokeTests
     {
+        // TODO: temporarily disabling these tests as dotnet xunit runner does not support 32-bit yet.
+        public class SmokeTests_X86
+        {
+            [ConditionalTheory, Trait("E2Etests", "Smoke")]
+            [OSSkipCondition(OperatingSystems.Linux)]
+            [OSSkipCondition(OperatingSystems.MacOSX)]
+            //[InlineData(ServerType.WebListener, RuntimeFlavor.Clr, RuntimeArchitecture.x86, ApplicationType.Portable)]
+            //[InlineData(ServerType.WebListener, RuntimeFlavor.CoreClr, RuntimeArchitecture.x86, ApplicationType.Portable)]
+            //[InlineData(ServerType.WebListener, RuntimeFlavor.CoreClr, RuntimeArchitecture.x86, ApplicationType.Standalone)]
+            //[InlineData(ServerType.Kestrel, RuntimeFlavor.Clr, RuntimeArchitecture.x86, ApplicationType.Portable)]
+            [InlineData(ServerType.Kestrel, RuntimeFlavor.CoreClr, RuntimeArchitecture.x86, ApplicationType.Portable)]
+            //[InlineData(ServerType.Kestrel, RuntimeFlavor.CoreClr, RuntimeArchitecture.x86, ApplicationType.Standalone)]
+            //[InlineData(ServerType.IISExpress, RuntimeFlavor.Clr, RuntimeArchitecture.x86, ApplicationType.Portable)]
+            //[InlineData(ServerType.IISExpress, RuntimeFlavor.CoreClr, RuntimeArchitecture.x86, ApplicationType.Portable)]
+            //[InlineData(ServerType.IISExpress, RuntimeFlavor.CoreClr, RuntimeArchitecture.x86, ApplicationType.Standalone)]
+            public async Task WindowsOS(
+                ServerType serverType,
+                RuntimeFlavor runtimeFlavor,
+                RuntimeArchitecture architecture,
+                ApplicationType applicationType)
+            {
+                var smokeTestRunner = new SmokeTests();
+                await smokeTestRunner.SmokeTestSuite(serverType, runtimeFlavor, architecture, applicationType);
+            }
+
+            //[ConditionalTheory(Skip = "Temporarily disabling test"), Trait("E2Etests", "Smoke")]
+            //[OSSkipCondition(OperatingSystems.Windows)]
+            //[InlineData(ServerType.Kestrel, RuntimeFlavor.Clr, RuntimeArchitecture.x86, ApplicationType.Portable)]
+            //public async Task NonWindowsOS(
+            //    ServerType serverType,
+            //    RuntimeFlavor runtimeFlavor,
+            //    RuntimeArchitecture architecture,
+            //    ApplicationType applicationType)
+            //{
+            //    var smokeTestRunner = new SmokeTests();
+            //    await smokeTestRunner.SmokeTestSuite(serverType, runtimeFlavor, architecture, applicationType);
+            //}
+        }
+
         public class SmokeTests_X64
         {
             [ConditionalTheory, Trait("E2Etests", "Smoke")]
