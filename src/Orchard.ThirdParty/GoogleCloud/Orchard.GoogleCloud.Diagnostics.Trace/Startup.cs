@@ -27,8 +27,11 @@ namespace Orchard.GoogleCloud.Diagnostics.Trace
 
         public override void Configure(IApplicationBuilder app, IRouteBuilder routes, IServiceProvider serviceProvider)
         {
-            var diagnosticListener = serviceProvider.GetRequiredService<DiagnosticListener>();
-            diagnosticListener.SubscribeWithAdapter(serviceProvider.GetRequiredService<GoogleCloudTraceListener>());
+            var diagnosticListener = serviceProvider
+                .GetRequiredService<DiagnosticListener>();
+
+            diagnosticListener.SubscribeWithAdapter(
+                serviceProvider.GetRequiredService<GoogleCloudTraceListener>());
         }
     }
 }

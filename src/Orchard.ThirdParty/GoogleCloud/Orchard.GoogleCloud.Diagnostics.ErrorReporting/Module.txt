@@ -1,1 +1,2 @@
-﻿Name: Google Cloud Error Reporting
+﻿Name: Google Cloud Diagnostic Error Reporting
+Dependencies: Orchard.GoogleCloud.Core

@@ -1,0 +1,2 @@
+﻿Name: Google Cloud Diagnostic Tracing
+Dependencies: Orchard.GoogleCloud.Core
