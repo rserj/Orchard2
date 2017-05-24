@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Modules;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DiagnosticAdapter;
 
 namespace Orchard.GoogleCloud.Diagnostics.Trace
 {
@@ -13,30 +12,23 @@ namespace Orchard.GoogleCloud.Diagnostics.Trace
     {
         public override void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<TraceServiceClient>(_ => {
-                return Google.Cloud.Trace.V1.TraceServiceClient.Create();
+            services.AddSingleton<TraceServiceClient>(sp => {
+                var clock = sp.GetService<Google.Api.Gax.IClock>();
+
+                return Google.Cloud.Trace.V1.TraceServiceClient.Create(
+                    settings: new TraceServiceSettings {
+                        Clock = clock
+                    }
+                );
             });
+
+            services.AddSingleton<GoogleCloudTraceListener>();
         }
 
         public override void Configure(IApplicationBuilder app, IRouteBuilder routes, IServiceProvider serviceProvider)
         {
             var diagnosticListener = serviceProvider.GetRequiredService<DiagnosticListener>();
-            diagnosticListener.SubscribeWithAdapter(new GoogleCloudTraceListener());
-        }
-    }
-
-    public class GoogleCloudTraceListener
-    {
-        [DiagnosticName("Trace.Starting")]
-        public virtual void OnTraceStarting()
-        {
-        }
-
-        [DiagnosticName("Trace.Finished")]
-        public virtual void OnTraceFinished()
-        {
-            var r = new Google.Cloud.Trace.V1.Trace { };
-            r.Spans.Add(new TraceSpan {  });
+            diagnosticListener.SubscribeWithAdapter(serviceProvider.GetRequiredService<GoogleCloudTraceListener>());
         }
     }
 }
