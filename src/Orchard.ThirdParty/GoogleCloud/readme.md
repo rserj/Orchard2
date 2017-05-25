@@ -11,9 +11,13 @@ To start... Go here https://cloud.google.com/ , Register, and lets get cracking!
 Configuration is done directly in your tenant file, i.e. settings.txt or tenants.json. Here is an example of what it looks like in tenants.json
 
 ```json
-"googlecloud": {
-    "credentials": {
-        # JSON HERE FOR SERVICE ACCOUNT ACCESS
+{
+    "default": {
+        "googlecloud": {
+            "credentials": {
+                # JSON HERE FOR SERVICE ACCOUNT ACCESS
+            }
+        }
     }
 }
 ```
