@@ -11,10 +11,14 @@ namespace Orchard.GoogleCloud
         public GoogleShellSettings(ShellSettings shellSettings)
         {
             var googleCloudSection = shellSettings["googlecloud"];
-            var rawCredentials = JObject.Parse(googleCloudSection)["credentials"];
-            ProjectId = rawCredentials.Value<string>("project_id");
 
-            Credentials = CreateCredential(rawCredentials.ToString());
+            if (googleCloudSection != null)
+            {
+                var rawCredentials = JObject.Parse(googleCloudSection)["credentials"];
+                ProjectId = rawCredentials.Value<string>("project_id");
+
+                Credentials = CreateCredential(rawCredentials.ToString());
+            }
         }
 
         public string ProjectId { get; private set; }

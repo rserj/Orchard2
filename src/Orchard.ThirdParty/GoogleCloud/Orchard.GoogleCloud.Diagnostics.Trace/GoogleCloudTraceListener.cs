@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using Google.Cloud.Diagnostics.Common;
-using Google.Cloud.Trace.V1;
 using Microsoft.Extensions.DiagnosticAdapter;
 
 namespace Orchard.GoogleCloud.Diagnostics.Trace
 {
-    public class GoogleCloudTraceListener
+    public class GoogleCloudTraceListener : IDisposable
     {
         private readonly IManagedTracer _tracer;
+
+        private readonly Stack<Tuple<string, IDisposable>> _runningSpans
+            = new Stack<Tuple<string, IDisposable>>();
 
         public GoogleCloudTraceListener(
             IManagedTracer tracer)
@@ -18,51 +18,31 @@ namespace Orchard.GoogleCloud.Diagnostics.Trace
             _tracer = tracer;
         }
 
-        [DiagnosticName("Trace.Starting")]
-        public virtual Task OnTraceStarting()
+        [DiagnosticName("Orchard.GoogleCloud.Diagnostics.TraceStarted")]
+        public virtual void OnTraceStarting(
+            string name
+            )
         {
-            return null;
+            _runningSpans.Push(new Tuple<string, IDisposable>(name, _tracer.StartSpan(name)));
         }
 
-        [DiagnosticName("Trace.Finished")]
-        public virtual Task OnTraceFinished(
+        [DiagnosticName("Orchard.GoogleCloud.Diagnostics.TraceFinished")]
+        public virtual void OnTraceFinished(
             string name,
-            string projectId,
             IDictionary<string,string> labels,
             DateTimeOffset startTime,
             DateTimeOffset endTime
             )
         {
-            // https://github.com/GoogleCloudPlatform/google-cloud-dotnet/blob/master/apis/Google.Cloud.Diagnostics.AspNetCore/Google.Cloud.Diagnostics.AspNetCore.Snippets/AspNetCoreSnippets.cs
+            _runningSpans.Pop().Item2.Dispose();
+        }
 
-            return null;
-
-            //var trace = new Google.Cloud.Trace.V1.Trace {
-            //    /*TraceId = ?*/
-            //    ProjectId = projectId,
-            //};
-
-            //var traceSpan = new TraceSpan
-            //{
-            //    Name = name,
-            //    /*ParentSpanId = ?*/
-            //    /*SpanId = ?*/
-            //    StartTime = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(startTime),
-            //    EndTime = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTimeOffset(endTime),
-            //};
-
-            //traceSpan.Labels.Add(labels);
-
-            //trace.Spans.Add(traceSpan);
-
-            //var traces = new Traces();
-            //traces.Traces_.Add(trace);
-
-
-            //return _client.PatchTracesAsync(new PatchTracesRequest
-            //{
-            //    Traces = traces
-            //});
+        public void Dispose()
+        {
+            foreach (var span in _runningSpans)
+            {
+                span.Item2.Dispose();
+            }
         }
     }
 }

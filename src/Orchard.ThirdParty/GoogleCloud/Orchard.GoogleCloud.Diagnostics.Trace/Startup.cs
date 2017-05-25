@@ -24,14 +24,17 @@ namespace Orchard.GoogleCloud.Diagnostics.Trace
             _clock = clock;
         }
 
-        public override void ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(
+            IServiceCollection services)
         {
             services.AddSingleton<GoogleCloudTraceListener>();
+
             services.AddGoogleTrace(_shellSettings.ProjectId,
                 client: CreateTraceServiceClient(new GoogleClock(_clock)));
         }
 
-        public override void Configure(IApplicationBuilder app, IRouteBuilder routes, IServiceProvider serviceProvider)
+        public override void Configure(
+            IApplicationBuilder app, IRouteBuilder routes, IServiceProvider serviceProvider)
         {
             // Add Automatic Trace Middleware
             app.UseGoogleTrace();
