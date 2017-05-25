@@ -33,5 +33,22 @@ gcloud beta app deploy app.yaml -q
 ## Usages
 ### Tracing
 
+```c#
+if (_diagnostics.IsEnabled("Orchard.GoogleCloud.Diagnostics.TraceStarted"))
+{
+    _diagnostics.Write(
+        "Orchard.GoogleCloud.Diagnostics.TraceStarted",
+        new
+        {
+            name = "A Name Here!"
+        });
+
+
+    // DO SOMETHING
+
+    _diagnostics.Write("Orchard.GoogleCloud.Diagnostics.TraceFinished");
+}
+```
+
 Orchard.GoogleCloud.Diagnostics.TraceStarted
 Orchard.GoogleCloud.Diagnostics.TraceFinished
