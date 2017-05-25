@@ -42,7 +42,7 @@ namespace Orchard.GoogleCloud.Diagnostics.Trace
             // Add Diagnotic Listeners
             var diagnosticListener = serviceProvider
                 .GetRequiredService<DiagnosticListener>();
-
+            
             diagnosticListener.SubscribeWithAdapter(
                 serviceProvider.GetRequiredService<GoogleCloudTraceListener>());
         }
