@@ -6,10 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Api.Gax" Version="2.0.0-beta01" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.26.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\OrchardCore\OrchardCore.AsModule\OrchardCore.AsModule.csproj" />
+    <ProjectReference Include="..\..\..\OrchardCore\Microsoft.AspNetCore.Modules.Abstractions\Microsoft.AspNetCore.Modules.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\OrchardCore\Orchard.Environment.Shell.Abstractions\Orchard.Environment.Shell.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

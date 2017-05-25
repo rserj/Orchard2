@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Modules;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
 using Orchard.Environment.Shell;
 
 namespace Orchard.GoogleCloud.Diagnostics.ErrorReporting
@@ -14,6 +13,7 @@ namespace Orchard.GoogleCloud.Diagnostics.ErrorReporting
     public class Startup : StartupBase
     {
         private readonly ShellSettings _shellSettings;
+        private readonly GoogleShellSettings _googleShellSettings;
         private readonly IHostingEnvironment _env;
 
         public Startup(
@@ -21,6 +21,7 @@ namespace Orchard.GoogleCloud.Diagnostics.ErrorReporting
             IHostingEnvironment env)
         {
             _shellSettings = shellSettings;
+            _googleShellSettings = new GoogleShellSettings(shellSettings);
             _env = env;
         }
 
@@ -28,15 +29,12 @@ namespace Orchard.GoogleCloud.Diagnostics.ErrorReporting
         {
             if (_env.IsProduction())
             {
-                var rawCredentials = _shellSettings["GoogleCredentials"];
-                var projectId = JObject.Parse(rawCredentials).Value<string>("project_id");
-
                 var version = Assembly
                     .GetEntryAssembly()
                     .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
                     .InformationalVersion;
 
-                services.AddGoogleExceptionLogging(projectId, _shellSettings.Name, version);
+                services.AddGoogleExceptionLogging(_googleShellSettings.ProjectId, _shellSettings.Name, version);
             }
         }
 

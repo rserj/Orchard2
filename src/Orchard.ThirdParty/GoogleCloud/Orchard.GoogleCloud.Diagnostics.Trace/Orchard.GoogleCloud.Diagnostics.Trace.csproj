@@ -7,13 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Cloud.Trace.V1" Version="1.0.0-beta05" />
+    <PackageReference Include="Google.Cloud.Diagnostics.AspNetCore" Version="1.0.0-beta10" />
     <PackageReference Include="Microsoft.Extensions.DiagnosticAdapter" Version="1.1.1" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\OrchardCore\OrchardCore.AsModule\OrchardCore.AsModule.csproj" />
+    <ProjectReference Include="..\Orchard.GoogleCloud.Core\Orchard.GoogleCloud.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Orchard.Environment.Shell.Abstractions">
+      <HintPath>..\..\..\OrchardCore\Orchard.Environment.Shell.Abstractions\bin\Debug\netstandard1.6\Orchard.Environment.Shell.Abstractions.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

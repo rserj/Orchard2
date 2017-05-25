@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Modules;
 
-namespace Orchard.GoogleCloud.Core
+namespace Orchard.GoogleCloud
 {
     public class GoogleClock : Google.Api.Gax.IClock
     {

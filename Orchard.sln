@@ -283,6 +283,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GoogleCloud", "GoogleCloud"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.GoogleCloud.Core", "src\Orchard.ThirdParty\GoogleCloud\Orchard.GoogleCloud.Core\Orchard.GoogleCloud.Core.csproj", "{2E81C37E-4F00-46C1-97D9-C85275817F8F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orchard.GoogleCloud.Diagnostics.Logging", "src\Orchard.ThirdParty\GoogleCloud\Orchard.GoogleCloud.Diagnostics.Logging\Orchard.GoogleCloud.Diagnostics.Logging.csproj", "{2156E43B-49D9-4754-B220-C1031A0FA56B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -773,6 +775,10 @@ Global
 		{2E81C37E-4F00-46C1-97D9-C85275817F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E81C37E-4F00-46C1-97D9-C85275817F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E81C37E-4F00-46C1-97D9-C85275817F8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2156E43B-49D9-4754-B220-C1031A0FA56B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2156E43B-49D9-4754-B220-C1031A0FA56B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2156E43B-49D9-4754-B220-C1031A0FA56B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2156E43B-49D9-4754-B220-C1031A0FA56B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -914,5 +920,6 @@ Global
 		{3E80E080-97BB-4AFA-86C5-CE93E49DE664} = {F862029D-E6B1-450D-B9AF-1B0E2120FEA1}
 		{F862029D-E6B1-450D-B9AF-1B0E2120FEA1} = {B3D0C124-EF72-4F7B-AE0C-4C9B17B4668F}
 		{2E81C37E-4F00-46C1-97D9-C85275817F8F} = {F862029D-E6B1-450D-B9AF-1B0E2120FEA1}
+		{2156E43B-49D9-4754-B220-C1031A0FA56B} = {F862029D-E6B1-450D-B9AF-1B0E2120FEA1}
 	EndGlobalSection
 EndGlobal
