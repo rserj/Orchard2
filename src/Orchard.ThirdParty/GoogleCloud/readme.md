@@ -29,3 +29,9 @@ dotnet publish -c Release
 gcloud auth activate-service-account <SERVICEACCOUNT> --key-file <KEYFILENAME>
 gcloud config set project <PROJECTNAME>
 gcloud beta app deploy app.yaml -q
+
+## Usages
+### Tracing
+
+Orchard.GoogleCloud.Diagnostics.TraceStarted
+Orchard.GoogleCloud.Diagnostics.TraceFinished

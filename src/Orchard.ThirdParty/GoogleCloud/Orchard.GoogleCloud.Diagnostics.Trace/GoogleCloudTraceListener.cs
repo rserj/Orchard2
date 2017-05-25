@@ -27,12 +27,7 @@ namespace Orchard.GoogleCloud.Diagnostics.Trace
         }
 
         [DiagnosticName("Orchard.GoogleCloud.Diagnostics.TraceFinished")]
-        public virtual void OnTraceFinished(
-            string name,
-            IDictionary<string,string> labels,
-            DateTimeOffset startTime,
-            DateTimeOffset endTime
-            )
+        public virtual void OnTraceFinished()
         {
             _runningSpans.Pop().Item2.Dispose();
         }
