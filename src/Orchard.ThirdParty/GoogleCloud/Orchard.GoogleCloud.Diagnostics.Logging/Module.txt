@@ -1,2 +1,2 @@
-﻿Name: Google Cloud HealthCheck API
+﻿Name: Google Cloud Logging API
 Dependencies: Orchard.GoogleCloud.Core
